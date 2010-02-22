@@ -1,0 +1,527 @@
+#! /usr/bin/env python
+
+from Tkinter import *
+import ttk
+import sys
+import os
+import scipy
+from pyx import *
+from pyx.graph import axis
+from numpy import *
+import numpy as np
+from scipy.io import write_array
+from scipy.io import read_array
+
+def vp_start_gui():
+    global val, w, root
+    root = Tk()
+    root.title('Wang_Landau')
+    root.geometry('579x193+671+390')
+    set_Tk_var()
+    w = Wang_Landau (root)
+    root.mainloop()
+
+def quit():
+    root.destroy()
+
+def runWL():
+    deltax=float(delta.get()) 	
+    Px=int(P.get())
+    Lx=int(L.get())
+    Dx=int(D.get())
+    irunx=int(irun.get())
+    RPx=float(RP.get())
+    flatnessx=float(flatness.get())
+    fminx=float(minlogf.get())
+    threadx=int(ithread.get())  
+    otgx = int(otgflag.get())	
+
+    if otgx == 1 and Px > Dx: Px=Dx  	
+	
+    nome='_d'+str(int(deltax*10))+'_P'+str(Px)+'_L'+str(Lx)+'_D'+str(Dx)+'_run'+str(irunx)+'.dat '
+    
+    if otgx==1: 
+	  nome='_d'+str(int(deltax*10))+'_otgP'+str(Px)+'_L'+str(Lx)+'_D'+str(Dx)+'_run'+str(irunx)+'.dat ' 
+  
+    os.system('./moralWLwindows '+str(deltax)+' '+str(Px)+' '+str(RPx)+' '
+    +str(Dx)+' '+str(Lx)+' '+str(flatnessx)+' '+str(fminx)
+    +' '+'wlsrange'+str(threadx)+nome+'dos'+str(threadx)+nome+'thermo'
+    +str(threadx)+nome+'canonica'+str(threadx)+nome+'log'+str(threadx)+nome+'1 '
+    +str(otgx))
+
+    print 'thread', threadx,' run', irunx, ' P=', Px, ' ', ' delta=', deltax	
+   
+    #cria diretorio para dados	
+    lista= os.listdir(os.getcwd())
+    if not ('logs' in lista):os.system('mkdir logs')
+    if not ('WLSrange' in lista):os.system('mkdir WLSrange')
+    if not ('thermo' in lista):os.system('mkdir thermo')
+    if not ('canonical' in lista):os.system('mkdir canonical')
+    if not ('dos' in lista):os.system('mkdir dos')
+
+    #transfere resultados
+    os.system('mv log*.dat logs')
+    os.system('mv wlsrange*.dat WLSrange')
+    os.system('mv thermo*.dat thermo')
+    os.system('mv canonica*.dat canonical')
+    os.system('mv dos*.dat dos')
+
+
+def plot():
+    deltax=float(delta.get()) 	
+    Px=int(P.get())
+    Lx=int(L.get())
+    Dx=int(D.get())
+    irunx=int(irun.get())
+    RPx=float(RP.get())
+    flatnessx=float(flatness.get())
+    fminx=float(minlogf.get())
+    threadx=int(ithread.get())
+    
+    otgx = int(otgflag.get())	
+    flagcT=int(cTflag.get()) 
+    flagmeancT=int(meancTflag.get())
+    flagline=int(lineflag.get())      
+    
+    if otgx == 1 and Px > Dx: Px=Dx   	
+
+    path=os.getcwd()
+    pathfigs=path+'/figs/'		
+
+    if flagcT==1:
+
+	arq='cT'
+	patharq='thermo'
+	pathfile=path+'/'+patharq+'/'
+    	
+	sufixo=str(threadx)+'_d'+str(int(deltax*10))+'_P'+str(Px)+'_L'+str(Lx)+'_D'+str(Dx)+'_run'+str(irunx)
+
+	if otgx==1:
+		sufixo=str(threadx)+'_d'+str(int(deltax*10))+'_otgP'+str(Px)+'_L'+str(Lx)+'_D'+str(Dx)+'_run'+str(irunx)
+
+	nome=patharq+sufixo   	
+	nome_completo= pathfile+nome+'.dat'
+	
+	c = canvas.canvas()
+    	g1 = c.insert(graph.graphxy(width=8, 
+			x=graph.axis.linear(min=0, max=15, title=r"$\beta$"),
+    			y=graph.axis.linear(min=0, max=1, title=r"$R$")))
+    	g1.plot(graph.data.file(nome_completo, x=1, y=7),[graph.style.line()])
+
+    	g2 = c.insert(graph.graphxy(width=8, ypos=g1.height+0.5,
+                            x=graph.axis.linkedaxis(g1.axes["x"]),
+			    y=graph.axis.linear(title=r"$c_T$") ))
+    	g2.plot(graph.data.file(nome_completo, x=1, y=6),[graph.style.line()])
+    	c.writePDFfile(arq+sufixo)
+	    
+	lista= os.listdir(os.getcwd())
+    	if not ('figs' in lista):os.system('mkdir figs')
+
+    	print 'File '+arq+sufixo+'.pdf created.' 
+    	os.system('mv '+arq+sufixo+'.pdf figs')
+    	os.system('xpdf '+pathfigs+arq+sufixo+'.pdf&')	
+   
+	
+    if flagmeancT==1:
+	
+	arq='media'
+	patharq='medias'
+	pathfile=path+'/'+patharq+'/'
+	
+	sufixo='_d'+str(int(deltax*10))+'_P'+str(Px)+'_L'+str(Lx)+'_D'+str(Dx)
+	if otgx==1:
+		sufixo='_d'+str(int(deltax*10))+'_otgP'+str(Px)+'_L'+str(Lx)+'_D'+str(Dx)
+	
+        nome=arq+sufixo
+        nome_completo=pathfile+nome+'.dat'
+
+	c = canvas.canvas()
+    	g1 = c.insert(graph.graphxy(width=8, 
+			x=graph.axis.linear(min=0, max=15, title=r"$\beta$"),
+    			y=graph.axis.linear(min=0, max=1, title=r"$R$")))
+    	g1.plot(graph.data.file(nome_completo, x=1, y=7),[graph.style.line()])
+
+    	g2 = c.insert(graph.graphxy(width=8, ypos=g1.height+0.5,
+                            x=graph.axis.linkedaxis(g1.axes["x"]),
+			    y=graph.axis.linear(title=r"$c_T$") ))
+    	g2.plot(graph.data.file(nome_completo, x=1, y=6),[graph.style.line()])
+    	c.writePDFfile(arq+sufixo)
+	
+	lista= os.listdir(os.getcwd())
+    	if not ('figs' in lista):os.system('mkdir figs')
+
+   	print 'File '+arq+sufixo+'.pdf created.' 
+    	os.system('mv '+arq+sufixo+'.pdf figs')
+    	os.system('xpdf '+pathfigs+arq+sufixo+'.pdf&')    	
+
+    	
+    if flagline==1:
+
+	arq='fases'
+	patharq='fases'	
+	pathfile=path+'/'+patharq+'/'
+	sufixo='_P'+str(Px)+'_L'+str(Lx)+'_D'+str(Dx)
+	if otgx==1:
+		sufixo='_otgP'+str(Px)+'_L'+str(Lx)+'_D'+str(Dx)
+	nome=arq+sufixo
+	nome_completo=pathfile+nome+'.dat'
+
+	c = canvas.canvas()
+	g = c.insert(graph.graphxy(width=8,
+		x=graph.axis.linear(min=0, max=1.0, title=r"$\nu$"),
+    		y=graph.axis.linear(min=0, max=15, title=r"$\beta$")))
+
+	g.plot(graph.data.file(nome_completo, x=1, y=2, dy=3),
+        [graph.style.symbol(), graph.style.errorbar()])
+
+	c.writePDFfile(nome)
+
+ 	lista= os.listdir(os.getcwd())
+    	if not ('figs' in lista):os.system('mkdir figs')
+
+    	print 'File '+arq+sufixo+'.pdf created.' 
+    	os.system('mv '+arq+sufixo+'.pdf figs')
+    	os.system('xpdf '+pathfigs+arq+sufixo+'.pdf&')	
+
+
+def medias():
+
+     deltax=float(delta.get()) 	
+     Px=int(P.get())
+     Lx=int(L.get())
+     Dx=int(D.get())
+     irunx=int(irun.get())
+     RPx=float(RP.get())
+     flatnessx=float(flatness.get())
+     fminx=float(minlogf.get())
+     threadx=int(ithread.get())
+     otgx = int(otgflag.get())	
+  
+     if otgx == 1 and Px > Dx: Px=Dx 
+
+     path=os.getcwd()+'/thermo'	
+     seekarq='d'+str(int(deltax*10))+'_P'+str(Px)+'_L'+str(Lx)+'_D'+str(Dx)
+     if otgx==1:
+	 seekarq='d'+str(int(deltax*10))+'_otgP'+str(Px)+'_L'+str(Lx)+'_D'+str(Dx)
+       	
+     n=0
+     for i in os.walk(path):
+     	for j in i[2]:
+             	if j.rfind(seekarq) != -1:
+		    	data = read_array(file(path+'/'+j))
+			if n==0:
+		    		cols=size(data,1)
+		    		rows=size(data,0)
+		    		media=np.zeros((rows,cols))
+		   		variancia=np.zeros((rows,cols))
+				m_betaC=0
+				v_betaC=0
+			cTdata=data[:,5]
+			maxindex=cTdata.argmax()	
+	        	media+=data	
+	        	variancia+=data*data
+			betaC=data[maxindex,0]	
+			m_betaC+=betaC
+			v_betaC+=betaC*betaC
+	       		print n,j,'BetaC=',betaC
+	        	n=n+1 	
+     if n>0:
+	  m_betaC=m_betaC/n
+	  v_betaC=v_betaC/n-m_betaC*m_betaC
+	  dp_betaC=sqrt(abs(v_betaC))	
+    	  media=media/n	
+    	  variancia=variancia/n-media*media
+    	  dp=sqrt(abs(variancia))	
+    	  media=hstack([media,dp])
+    	  write_array("media.dat",media)	
+     else:
+    	  print "There is not such a file."
+	
+     lista= os.listdir(os.getcwd())
+     if not ('medias' in lista):os.system('mkdir medias')
+     os.system('mv media.dat medias/media_'+seekarq+'.dat')
+     print 'file media_'+seekarq+'.dat has been created.'
+     print 'BetaC=',m_betaC,'(',dp_betaC,')'	   
+
+
+def phaselines():
+     
+     Px=int(P.get())
+     Lx=int(L.get())
+     Dx=int(D.get())
+     otgx = int(otgflag.get())	
+
+     if otgx == 1 and Px > Dx: Px=Dx 	
+   
+     f = open("line.dat", "w")
+     path=os.getcwd()+'/thermo'
+     nomeconst='_P'+str(Px)+'_L'+str(Lx)+'_D'+str(Dx)
+     if otgx==1:
+		nomeconst='_otgP'+str(Px)+'_L'+str(Lx)+'_D'+str(Dx)
+     
+     for deltax in range(1,11,1):	
+     	seekarq='d'+str(deltax)+nomeconst
+     	n=0
+     	for i in os.walk(path):
+     		for j in i[2]:
+        	     	if j.rfind(seekarq) != -1:
+			    	data = read_array(file(path+'/'+j))
+				if n==0:
+					m_betaC=0
+					v_betaC=0
+				cTdata=data[:,5]
+				maxindex=cTdata.argmax()	
+		        	betaC=data[maxindex,0]	
+				m_betaC+=betaC
+				v_betaC+=betaC*betaC
+		        	n=n+1 	
+	if n>0:
+	 	m_betaC=m_betaC/n
+	 	v_betaC=v_betaC/n-m_betaC*m_betaC
+		dp_betaC=sqrt(abs(v_betaC))	
+    	  	f.write("%f %f %f \n" %(1-float(deltax)/10, m_betaC, dp_betaC))
+		print "%f %f %f" %(1-float(deltax)/10, m_betaC, dp_betaC)
+    	else:
+    	  	print "Unable to find data files"
+
+     f.close()
+     lista= os.listdir(os.getcwd())
+     if not ('fases' in lista):os.system('mkdir fases')
+     os.system('mv line.dat fases/fases'+nomeconst+'.dat')
+     print 'file fases'+nomeconst+'.dat has been created.'
+     
+
+
+
+
+def set_Tk_var():
+  
+    global delta
+    delta = StringVar()
+    delta.set('1.0') 	
+
+    global P
+    P = StringVar()
+    P.set('1')	
+
+    global D
+    D = StringVar()
+    D.set('5')	
+
+    global L
+    L = StringVar()
+    L.set('10') 
+
+    global flatness
+    flatness = StringVar()
+    flatness.set('0.85')	
+
+    global irun
+    irun = StringVar()
+    irun.set('0')
+
+    global ithread
+    ithread = StringVar()
+    ithread.set('0')
+
+    global minlogf
+    minlogf = StringVar()
+    minlogf.set('0.0001')
+
+    global RP
+    RP = StringVar()
+    RP.set('0.0')	
+
+    global cTflag
+    cTflag = StringVar()
+    cTflag.set('1')	
+
+    global meancTflag
+    meancTflag = StringVar()
+    meancTflag.set('0')	
+
+    global lineflag
+    lineflag = StringVar()
+    lineflag.set('0')	
+
+    global otgflag
+    otgflag = StringVar()
+    otgflag.set('0')
+
+
+class Wang_Landau:
+    def __init__(self, master=None):
+        
+        style = ttk.Style()
+        theme = style.theme_use()
+        default = style.lookup(theme, 'background')
+        master.configure(background=default)
+
+	#-----------------Buttons ------------------------
+
+	self.butrun = Button (master, command=runWL)
+        self.butrun.place(relx=0.39,rely=0.13)
+        self.butrun.configure(activebackground="#f9f9f9")
+        self.butrun.configure(text="run")
+
+        self.butTc = Button (master, command=medias)
+        self.butTc.place(relx=0.66,rely=0.13)
+        self.butTc.configure(activebackground="#f9f9f9")
+        self.butTc.configure(text="mean")
+        
+        self.butplot = Button (master, command=plot)
+        self.butplot.place(relx=0.52,rely=0.13)
+        self.butplot.configure(activebackground="#f9f9f9")
+        self.butplot.configure(text="plot")
+
+	self.butquit = Button (master, command=phaselines)
+        self.butquit.place(relx=0.82,rely=0.13)
+        self.butquit.configure(activebackground="#f9f9f9")
+        self.butquit.configure(text="phases")
+
+        self.butquit = Button (master, command=quit)
+        self.butquit.place(relx=0.10,rely=0.73)
+        self.butquit.configure(activebackground="#f9f9f9")
+        self.butquit.configure(text="quit")
+
+
+	#-----------------Entries ------------------------
+
+        self.deltain = Entry (master)
+        self.deltain.place(relx=0.14,rely=0.13,relheight=0.1,relwidth=0.17)
+        self.deltain.configure(selectbackground="#c4c4c4")
+        self.deltain.configure(textvariable=delta)
+
+
+	self.deltalbl = Label (master)
+        self.deltalbl.place(relx=0.04,rely=0.13,relheight=0.1,relwidth=0.07)
+        self.deltalbl.configure(activebackground="#f9f9f9")
+        self.deltalbl.configure(text="delta")
+
+
+        self.Pin = Entry (master)
+        self.Pin.place(relx=0.14,rely=0.25,relheight=0.1,relwidth=0.17)
+        self.Pin.configure(selectbackground="#c4c4c4")
+        self.Pin.configure(textvariable=P)
+
+	self.Plbl = Label (master)
+        self.Plbl.place(relx=0.04,rely=0.25,relheight=0.1,relwidth=0.07)
+        self.Plbl.configure(activebackground="#f9f9f9")
+        self.Plbl.configure(text="P")
+
+      
+        self.Din = Entry (master)
+        self.Din.place(relx=0.14,rely=0.51,relheight=0.1,relwidth=0.17)
+        self.Din.configure(selectbackground="#c4c4c4")
+        self.Din.configure(textvariable=D)
+
+        self.Dlbl = Label (master)
+        self.Dlbl.place(relx=0.04,rely=0.51,relheight=0.1,relwidth=0.07)
+        self.Dlbl.configure(activebackground="#f9f9f9")
+        self.Dlbl.configure(text="D")
+
+              
+        self.Lin = Entry (master)
+        self.Lin.place(relx=0.14,rely=0.38,relheight=0.1,relwidth=0.17)
+        self.Lin.configure(selectbackground="#c4c4c4")
+        self.Lin.configure(textvariable=L)
+
+	self.Lbl = Label (master)
+        self.Lbl.place(relx=0.04,rely=0.38,relheight=0.1,relwidth=0.07)
+        self.Lbl.configure(activebackground="#f9f9f9")
+        self.Lbl.configure(text="L")
+
+
+	#self.RPin = Entry (master)
+        #self.RPin.place(relx=0.14,rely=0.64,relheight=0.1,relwidth=0.17)
+        #self.RPin.configure(selectbackground="#c4c4c4")
+        #self.RPin.configure(textvariable=RP)
+
+	#self.RPlbl = Label (master)
+        #self.RPlbl.place(relx=0.04,rely=0.64,relheight=0.1,relwidth=0.07)
+        #self.RPlbl.configure(activebackground="#f9f9f9")
+        #self.RPlbl.configure(text="RP")
+
+
+        self.flatin = Entry (master)
+        self.flatin.place(relx=0.47,rely=0.6,relheight=0.1,relwidth=0.17)
+        self.flatin.configure(selectbackground="#c4c4c4")
+        self.flatin.configure(textvariable=flatness)
+
+	self.flatlbl = Label (master)
+        self.flatlbl.place(relx=0.37,rely=0.6,relheight=0.1,relwidth=0.1)
+        self.flatlbl.configure(activebackground="#f9f9f9")
+        self.flatlbl.configure(text="flatness")
+        
+
+        self.runin = Entry (master)
+        self.runin.place(relx=0.8,rely=0.6,relheight=0.1,relwidth=0.09)
+        self.runin.configure(selectbackground="#c4c4c4")
+        self.runin.configure(textvariable=irun)
+
+        self.runlbl= Label (master)
+        self.runlbl.place(relx=0.72,rely=0.6,relheight=0.1,relwidth=0.06)
+        self.runlbl.configure(activebackground="#f9f9f9")
+        self.runlbl.configure(text="irun")
+
+
+	self.threadin = Entry (master)
+        self.threadin.place(relx=0.8,rely=0.75,relheight=0.1,relwidth=0.09)
+        self.threadin.configure(selectbackground="#c4c4c4")
+        self.threadin.configure(textvariable=ithread)
+
+        self.threadlbl = Label (master)
+        self.threadlbl.place(relx=0.7,rely=0.75,relheight=0.1,relwidth=0.1)
+        self.threadlbl.configure(activebackground="#f9f9f9")
+        self.threadlbl.configure(text="ithread")
+
+        
+        self.logfin = Entry (master)
+        self.logfin.place(relx=0.47,rely=0.75,relheight=0.1,relwidth=0.17)
+        self.logfin.configure(selectbackground="#c4c4c4")
+        self.logfin.configure(textvariable=minlogf)
+
+        self.logflbl = Label (master)
+        self.logflbl.place(relx=0.37,rely=0.75,relheight=0.1,relwidth=0.1)
+        self.logflbl.configure(activebackground="#f9f9f9")
+        self.logflbl.configure(text="minlogf")
+
+
+       #-----------------Checks ------------------------
+
+        self.cTcheck = Checkbutton (master)
+        self.cTcheck.place(relx=0.35,rely=0.34,relheight=0.11,relwidth=0.08)
+        self.cTcheck.configure(activebackground="#f9f9f9")
+        self.cTcheck.configure(background="#cccccc")
+        self.cTcheck.configure(selectcolor="#b03060")
+        self.cTcheck.configure(text="cT")
+        self.cTcheck.configure(variable=cTflag)
+
+        self.mediacheck = Checkbutton (master)
+        self.mediacheck.place(relx=0.45,rely=0.34,relheight=0.11,relwidth=0.15)
+        self.mediacheck.configure(activebackground="#f9f9f9")
+        self.mediacheck.configure(background="#cccccc")
+        self.mediacheck.configure(selectcolor="#b03060")
+        self.mediacheck.configure(text="meancT")
+        self.mediacheck.configure(variable=meancTflag)
+
+        self.termocheck = Checkbutton (master)
+        self.termocheck.place(relx=0.61,rely=0.34,relheight=0.11,relwidth=0.15)
+        self.termocheck.configure(activebackground="#f9f9f9")
+        self.termocheck.configure(background="#cccccc")
+        self.termocheck.configure(selectcolor="#b03060")
+        self.termocheck.configure(text="phase line")
+        self.termocheck.configure(variable=lineflag)
+
+        self.doscheck = Checkbutton (master)
+        self.doscheck.place(relx=0.77,rely=0.34,relheight=0.11,relwidth=0.22)
+        self.doscheck.configure(activebackground="#f9f9f9")
+        self.doscheck.configure(background="#cccccc")
+        self.doscheck.configure(selectcolor="#b03060")
+        self.doscheck.configure(text="orthog. issues")
+        self.doscheck.configure(variable=otgflag)
+       
+       
+if __name__ == '__main__':
+    vp_start_gui()
+

@@ -1,0 +1,179 @@
+# parameters are DELTA=0.90 P=1 D=2L=5 RP=0.00 TOL=0.85 MINLOGF=0.0001
+# ground state: -180
+# the sampling interval is [-121, 10] found in 100001 sweeps 
+
+# sampling [-121.000000,10.000000]
+# walking from E=-119
+ #verificando flatness em [0.000000,10.000000]
+#minH=     3023	 k<H>=    2585	 10000 sweeps	 # extendendo flatness a [-69.797500,10.000000]
+# window 1 [-67, 10] is flat after 10000 sweeps
+# random walk is now restricted to [-121,-64]
+# sampling [-121.000000,-63.797500]
+# walking from E=-118
+ #verificando flatness em [-73.797500,-63.797500]
+#minH=     5800	 k<H>=    4948	 20000 sweeps	 # extendendo flatness a [-121.002500,-63.797500]
+# window 2 [-121,-67] is flat after 20000 sweeps
+# log(f)=1.000000 converged within 20000 sweeps
+
+# sampling [-121.000000,10.000000]
+# walking from E=-118
+ #verificando flatness em [0.000000,10.000000]
+#minH=     2214	 k<H>=    1906	 10000 sweeps	 # extendendo flatness a [-121.002500,10.000000]
+# window 1 [-121, 10] is flat after 10000 sweeps
+# log(f)=0.500000 converged within 10000 sweeps
+
+# sampling [-121.000000,10.000000]
+# walking from E=-119
+ #verificando flatness em [0.000000,10.000000]
+#minH=     1827	 k<H>=    1569	 10000 sweeps	 # extendendo flatness a [-121.002500,10.000000]
+# window 1 [-121, 10] is flat after 10000 sweeps
+# log(f)=0.250000 converged within 10000 sweeps
+
+# sampling [-121.000000,10.000000]
+# walking from E=-119
+ #verificando flatness em [0.000000,10.000000]
+#minH=     2074	 k<H>=    1782	 10000 sweeps	 # extendendo flatness a [-121.002500,10.000000]
+# window 1 [-121, 10] is flat after 10000 sweeps
+# log(f)=0.125000 converged within 10000 sweeps
+
+# sampling [-121.000000,10.000000]
+# walking from E=-118
+ #verificando flatness em [0.000000,10.000000]
+#minH=     2034	 k<H>=    1758	 10000 sweeps	 # extendendo flatness a [-121.002500,10.000000]
+# window 1 [-121, 10] is flat after 10000 sweeps
+# log(f)=0.062500 converged within 10000 sweeps
+
+# sampling [-121.000000,10.000000]
+# walking from E=-118
+ #verificando flatness em [0.000000,10.000000]
+#minH=     2242	 k<H>=    1944	 10000 sweeps	 # extendendo flatness a [-121.002500,10.000000]
+# window 1 [-121, 10] is flat after 10000 sweeps
+# log(f)=0.031250 converged within 10000 sweeps
+
+# sampling [-121.000000,10.000000]
+# walking from E=-118
+ #verificando flatness em [0.000000,10.000000]
+#minH=     2246	 k<H>=    1980	 10000 sweeps	 # extendendo flatness a [-121.002500,10.000000]
+# window 1 [-121, 10] is flat after 10000 sweeps
+# log(f)=0.015625 converged within 10000 sweeps
+
+# sampling [-121.000000,10.000000]
+# walking from E=-119
+ #verificando flatness em [0.000000,10.000000]
+#minH=     1958	 k<H>=    1719	 10000 sweeps	 # extendendo flatness a [-121.002500,10.000000]
+# window 1 [-121, 10] is flat after 10000 sweeps
+# log(f)=0.007812 converged within 10000 sweeps
+
+# sampling [-121.000000,10.000000]
+# walking from E=-117
+ #verificando flatness em [0.000000,10.000000]
+#minH=     1927	 k<H>=    1755	 10000 sweeps	 # extendendo flatness a [-121.002500,10.000000]
+# window 1 [-121, 10] is flat after 10000 sweeps
+# log(f)=0.003906 converged within 10000 sweeps
+
+# sampling [-121.000000,10.000000]
+# walking from E=-118
+ #verificando flatness em [0.000000,10.000000]
+#minH=     1869	 k<H>=    1735	 10000 sweeps	 # extendendo flatness a [-47.852500,10.000000]
+# window 1 [-45, 10] is flat after 10000 sweeps
+# random walk is now restricted to [-121,-42]
+# sampling [-121.000000,-41.852500]
+# walking from E=-118
+ #verificando flatness em [-51.852500,-41.852500]
+#minH=     4401	 k<H>=    3849	 20000 sweeps	 # extendendo flatness a [-107.037500,-41.852500]
+# window 2 [-104,-45] is flat after 20000 sweeps
+# random walk is now restricted to [-121,-101]
+# sampling [-121.000000,-101.037500]
+# walking from E=-120
+ #verificando flatness em [-111.037500,-101.037500]
+#minH=    15851	 k<H>=   13832	 30000 sweeps	 # extendendo flatness a [-121.002500,-101.037500]
+# window 3 [-121,-104] is flat after 30000 sweeps
+# log(f)=0.001953 converged within 30000 sweeps
+
+# sampling [-121.000000,10.000000]
+# walking from E=-118
+ #verificando flatness em [0.000000,10.000000]
+#minH=     1916	 k<H>=    1795	 10000 sweeps	 # extendendo flatness a [-96.397500,10.000000]
+# window 1 [-93, 10] is flat after 10000 sweeps
+# random walk is now restricted to [-121,-90]
+# sampling [-121.000000,-90.397500]
+# walking from E=-120
+ #verificando flatness em [-100.397500,-90.397500]
+#minH=     9874	 k<H>=    9079	 20000 sweeps	 # extendendo flatness a [-121.002500,-90.397500]
+# window 2 [-121,-93] is flat after 20000 sweeps
+# log(f)=0.000977 converged within 20000 sweeps
+
+# sampling [-121.000000,10.000000]
+# walking from E=-119
+ #verificando flatness em [0.000000,10.000000]
+#minH=      139	 k<H>=     224	 10000 sweeps	  #verificando flatness em [0.000000,10.000000]
+#minH=     2461	 k<H>=    2243	 20000 sweeps	 # extendendo flatness a [-121.002500,10.000000]
+# window 1 [-121, 10] is flat after 20000 sweeps
+# log(f)=0.000488 converged within 20000 sweeps
+
+# sampling [-121.000000,10.000000]
+# walking from E=-119
+ #verificando flatness em [0.000000,10.000000]
+#minH=     2916	 k<H>=    2745	 10000 sweeps	 # extendendo flatness a [-5.292500,10.000000]
+# window 1 [ -2, 10] is flat after 10000 sweeps
+# random walk is now restricted to [-121,  1]
+# sampling [-121.000000,0.707500]
+# walking from E=-117
+ #verificando flatness em [-9.292500,0.707500]
+#minH=     1303	 k<H>=    1305	 20000 sweeps	  #verificando flatness em [-9.292500,0.707500]
+#minH=     3648	 k<H>=    3325	 30000 sweeps	 # extendendo flatness a [-27.237500,0.707500]
+# window 2 [-24, -2] is flat after 30000 sweeps
+# random walk is now restricted to [-121,-21]
+# sampling [-121.000000,-21.237500]
+# walking from E=-117
+ #verificando flatness em [-31.237500,-21.237500]
+#minH=     1534	 k<H>=    1617	 40000 sweeps	  #verificando flatness em [-31.237500,-21.237500]
+#minH=     6856	 k<H>=    6228	 50000 sweeps	 # extendendo flatness a [-75.782500,-21.237500]
+# window 3 [-73,-24] is flat after 50000 sweeps
+# random walk is now restricted to [-121,-70]
+# sampling [-121.000000,-69.782500]
+# walking from E=-120
+ #verificando flatness em [-79.782500,-69.782500]
+#minH=     4657	 k<H>=    4365	 60000 sweeps	 # extendendo flatness a [-121.002500,-69.782500]
+# window 4 [-121,-73] is flat after 60000 sweeps
+# log(f)=0.000244 converged within 60000 sweeps
+
+# sampling [-121.000000,10.000000]
+# walking from E=-118
+ #verificando flatness em [0.000000,10.000000]
+#minH=      591	 k<H>=     683	 10000 sweeps	  #verificando flatness em [0.000000,10.000000]
+#minH=     4657	 k<H>=    4356	 20000 sweeps	 # extendendo flatness a [-11.610000,10.000000]
+# window 1 [ -9, 10] is flat after 20000 sweeps
+# random walk is now restricted to [-121, -6]
+# sampling [-121.000000,-5.610000]
+# walking from E=-119
+ #verificando flatness em [-15.610000,-5.610000]
+#minH=     2841	 k<H>=    2696	 30000 sweeps	 # extendendo flatness a [-27.902500,-5.610000]
+# window 2 [-25, -9] is flat after 30000 sweeps
+# random walk is now restricted to [-121,-22]
+# sampling [-121.000000,-21.902500]
+# walking from E=-119
+ #verificando flatness em [-31.902500,-21.902500]
+#minH=     3466	 k<H>=    3123	 40000 sweeps	 # extendendo flatness a [-70.130000,-21.902500]
+# window 3 [-67,-25] is flat after 40000 sweeps
+# random walk is now restricted to [-121,-64]
+# sampling [-121.000000,-64.130000]
+# walking from E=-115
+ #verificando flatness em [-74.130000,-64.130000]
+#minH=     5564	 k<H>=    5145	 50000 sweeps	 # extendendo flatness a [-106.372500,-64.130000]
+# window 4 [-103,-67] is flat after 50000 sweeps
+# random walk is now restricted to [-121,-100]
+# sampling [-121.000000,-100.372500]
+# walking from E=-119
+ #verificando flatness em [-110.372500,-100.372500]
+#minH=    16525	 k<H>=   15152	 60000 sweeps	 # extendendo flatness a [-113.687500,-100.372500]
+# window 5 [-111,-103] is flat after 60000 sweeps
+# random walk is now restricted to [-121,-108]
+# sampling [-121.000000,-107.687500]
+# walking from E=-120
+ #verificando flatness em [-117.687500,-107.687500]
+#minH=    23168	 k<H>=   21142	 70000 sweeps	 # extendendo flatness a [-121.002500,-107.687500]
+# window 6 [-121,-111] is flat after 70000 sweeps
+# log(f)=0.000122 converged within 70000 sweeps
+
+# BETAc: 1.840000  Tc:0.543478 
